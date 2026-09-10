@@ -1,33 +1,33 @@
 ---
 name: tailscale-service-delivery
-description: Deliver local web apps and review interfaces on this homeserver through Caddy at a dev.benceb.hu domain over Tailscale. Use when starting, updating, or handing off a browser-accessible local service; supports native services and Docker Compose.
+description: Connect local web apps and review interfaces on Bence's homeserver to its existing private Tailscale HTTPS routing and DNS overrides at dev.benceb.hu. Use when starting, updating, or handing off browser-accessible local services; not public deployment or headless tests.
 ---
 
 # Tailscale service delivery
 
-On this host, deliver browser-accessible work at a verified `https://<service>.dev.benceb.hu` URL. Keep it running after the task ends. A localhost URL alone is not the default handoff. This applies to runnable web work, not ordinary document or library edits.
+Deliver browser-accessible work at a verified `https://<service>.dev.benceb.hu` URL. These services are reachable only through Bence's Tailscale network using existing DNS overrides, not the public Internet. Reuse that arrangement without adding authentication gateways, per-app IP allowlists, or redesigning network controls. Preserve the existing access boundary.
 
-## Inspect the existing path
+This skill owns hostname, routing, TLS, DNS, and URL verification. [local-dev-environment](../local-dev-environment/SKILL.md) owns runtime, source/data isolation, readiness, and lifetime. Root coordinates both on one environment without an agent handoff. A suitable running service needs no rebuild merely to gain a hostname. Leave delivered review services running under the runtime skill's retention rules.
 
-Read the project's instructions and runtime runbook. Inspect `/home/benceb/Caddyfile` (normally symlinked from `/etc/caddy/Caddyfile`) and `/home/benceb/homeserver/README.md`. Recheck current service ownership, routing, DNS, ports and runtime before modifying them. Preserve unrelated services and user data.
+## Reuse the homeserver path
 
-The existing wildcard terminates TLS in Caddy and normally forwards to Traefik at `127.0.0.1:13100`. Containers opt into the external `workspace-dev-proxy` network with unique Traefik host labels. Native apps can use a host-specific `handle` inside the wildcard, with the remaining wildcard in a fallback `handle`. Reuse wildcard TLS; do not create duplicate sites or certificates unnecessarily.
+Read project runtime instructions, `/home/benceb/homeserver/README.md`, and relevant parts of `/home/benceb/Caddyfile` (normally symlinked from `/etc/caddy/Caddyfile`). Confirm route ownership and upstream; reuse the task's hostname or select an unused one. Use existing DNS overrides, not public DNS changes.
 
-## Choose the smallest suitable runtime
+The wildcard normally terminates TLS in Caddy and forwards to Traefik at `127.0.0.1:13100`. Follow actual host configuration if these details have changed:
 
-- Reuse the project's existing Compose or native service mechanism.
-- Use systemd for a simple native app. Keep its upstream bound to loopback, use the owner account, restart on failure and enable startup after reboot. Store the unit template and lifecycle commands in the project.
-- Use Compose when the app already needs it or isolation/dependencies justify it. Use a unique project identity and `workspace-dev-proxy`; publish no application host ports. Keep data and internal services off the shared proxy network. Follow project worktree rules when applicable.
-- Do not introduce Docker solely to obtain a hostname.
+- Compose frontends join `workspace-dev-proxy` with unique Traefik router/service labels and an explicit upstream port. This path needs no application host-port publishing; keep internal/data services off the shared proxy network.
+- Native apps use their assigned loopback port and the existing route pattern, typically a host-specific `handle` inside the wildcard with remaining traffic in a fallback `handle`.
 
-Keep access within the intended Tailscale scope. Check existing access controls; for an unauthenticated native app, a Caddy remote-address allowlist for the tailnet and loopback can enforce it. Do not trust client-supplied forwarded headers as proof of tailnet membership. Keep the upstream Host/Origin contract correct; do not remove application checks just to make the proxy work.
+Reuse wildcard TLS; do not create duplicate sites, certificates, proxies, or runtimes. Configure the application's Host/Origin contract correctly rather than disabling its checks.
 
-## Apply and verify
+## Apply the scoped change
 
-Prepare concrete project-owned configuration first. Validate it before activating it. Back up shared configuration, recheck it for drift, and change only the task's route. Reload Caddy rather than restarting unrelated services. Avoid printing DNS-provider credentials or environment secrets. Native Caddy validation may require its service environment; load it privately if needed.
+Keep task routing configuration or labels reproducible in the project. Serialize shared proxy edits even across worktrees. Before editing a shared file, preserve a recovery copy and recheck for drift; change only the task's route. Validate with the service's actual configuration/environment without printing secrets, then use the existing graceful reload procedure. Compose-label changes normally require only the relevant runtime update, not a Caddy edit.
 
-Verify runtime health, startup persistence, routing, TLS certificate validation and the application response through the actual domain. A forced `curl --resolve` is useful for routing/TLS tests but does not prove client DNS: report DNS results separately. Check the configured tailnet resolver when system DNS differs. Test access restrictions where relevant. Do not claim validation from merely listing a process or obtaining an HTTP response on its direct port.
+Preserve diagnostic evidence and the last working route on failure where possible; never restore an old shared file over unrelated changes. Do not restart unrelated services, widen exposure, or change unrelated infrastructure.
 
-Update the project's runtime/architecture documentation with the domain, service or Compose identity, route ownership, status/log/start/stop commands, verification and limitations. Leave the review service running unless the user requests shutdown. Retire only task-owned temporary listeners after the replacement is verified.
+## Verify and hand off
 
-Use existing authorization for requested local delivery. This convention does not authorize public Internet exposure, production replacement, unrelated shared infrastructure changes, or deletion of data. Report any environmental approval block and complete independent work.
+Check the actual HTTPS domain with certificate validation and a representative changed interaction, including WebSockets when relevant. Use the established tailnet resolver when host DNS differs. `curl --resolve` tests routing/TLS, not normal client DNS; distinguish those results and report missing evidence. Reuse runtime readiness evidence rather than repeating startup checks.
+
+Add the hostname, route owner/upstream, configuration location, and DNS/TLS/application verification to the runtime's existing environment record. Hand off the HTTPS URL, not just localhost. Retire superseded task routes or listeners only after their replacement is verified and they are no longer needed; preserve shared proxy resources.

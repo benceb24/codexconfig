@@ -1,0 +1,4 @@
+interface:
+  display_name: "Local dev environment"
+  short_description: "Manage native or Compose development environments"
+  default_prompt: "Use $local-dev-environment to create or reuse the smallest suitable native or Compose environment, verify the requested behavior, and preserve its sources and data for the intended lifetime."
