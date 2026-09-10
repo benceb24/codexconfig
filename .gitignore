@@ -5,3 +5,5 @@
 !agents/**
 !skills/
 !skills/**
+skills/.system/
+skills/.system/**
