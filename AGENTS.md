@@ -20,7 +20,7 @@ Use `explorer` for substantial source discovery and `executor` for routine shell
 
 For other delegated work, use `default` or `read_only` and select a supported model and reasoning effort by difficulty: Terra for ordinary tasks; Sol or Astra for difficult, ambiguous, or high-risk work. Reassess poorly matched assignments. Do not impose planning, implementation, or review stages.
 
-Briefly announce the model, effort, and assignment; combine batch announcements. Spawn with `fork_turns: "none"` and a compact brief containing the outcome, relevant sources and expected workspace state, allowed changes, and acceptance criteria. For follow-ups, send only changed context and the next assignment. Subagents do not redelegate or broaden scope.
+Briefly announce the model, effort, and assignment; combine batch announcements. Spawn with `fork_turns: "none"` and a compact brief containing the outcome, relevant sources and expected workspace state, allowed changes, and acceptance criteria. For follow-ups, send only changed context and the next assignment. Subagents may delegate bounded support work to the specified Luna `explorer` and `executor` roles, following the same helper selection, announcement, briefing, and reuse rules. They must keep delegation within their assigned scope and must not delegate to other roles or broaden scope. Luna helpers do not redelegate.
 
 Keep one mutating actor per worktree; use separate worktrees for concurrent writers and transfer ownership before taking over. Keep sources stable during verification and Git finalization. Root owns integration and worktree lifecycle; preserve unrelated work and stop on unexplained drift.
 
