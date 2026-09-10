@@ -1,6 +1,6 @@
 interface:
   display_name: "Architecture-led delivery"
-  short_description: "Direct delivery with bounded delegation"
-  default_prompt: "Use $architecture-led-delivery to implement and verify this change against the maintained architecture, working directly unless bounded delegation materially helps."
+  short_description: "Create and maintain source-linked architecture maps"
+  default_prompt: "Use $architecture-led-delivery to create or update the relevant architecture map, grounding current-state claims in sources and separating proposals from approved decisions."
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

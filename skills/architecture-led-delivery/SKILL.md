@@ -1,58 +1,30 @@
 ---
 name: architecture-led-delivery
-description: Implement and verify changes against maintained architecture authority, with one accountable agent and optional bounded delegation. Use for implementation work with authoritative architecture sources, not planning-only requests or work without maintained architecture authority.
+description: Create and maintain concise, source-linked architecture maps for future context. Use for architecture mapping or design requests and changes to component boundaries, contracts, or key flows, including projects without existing maps. Do not use for routine edits with no architectural impact.
 ---
 
 # Architecture-led delivery
 
-Deliver a locally integrated, verified change. The root is the owner: it may design, update architecture, implement, review, and integrate directly.
+Preserve the understanding needed to navigate and change the system in later sessions. Root owns architectural decisions and synthesis. Follow the general delegation instructions; this skill adds no agent hierarchy or delivery stages.
 
-## Choose the smallest workflow
+## Establish the relevant picture
 
-Work directly unless a bounded subtask benefits materially from separate context, expertise, or parallel execution. Large repositories, multiple repositories, and worktree isolation do not themselves require delegation. Keep tightly coupled reasoning and implementation together.
+Read repository instructions, existing architecture documentation and decisions, and the relevant implementation and tests. Follow the project's documentation conventions. Treat maps as navigation, not a substitute for inspecting decisive sources. Check the relevant revisions and uncommitted changes when they affect interpretation.
 
-When delegation helps, dispatch workers or explorers directly. Add an architect only for a substantial domain that needs its own design and acceptance authority. The architect may implement directly; it need not dispatch workers. State the reason for delegation briefly, without formal mode declarations or mandatory design templates.
+Separate descriptions of the current implementation from approved constraints, proposals, and unresolved questions. Code establishes what exists; project decisions establish what is permitted. Report contradictions rather than silently treating either as the other. Missing descriptive documentation does not block ordinary work; resolve an unclear governing decision before changes that depend on it. Do not promote a proposal merely because it has been implemented.
 
-Read [agent-contracts.md](references/agent-contracts.md) only when delegating. Use a compact brief and return evidence, not repeated copies of the whole task history.
+## Build the smallest useful map
 
-The root chooses between `worker_luna` and `worker` using its judgment about task complexity, uncertainty, verification, and cost. See the agent contracts for their settings and shared boundaries.
+Update the existing map. If none exists and the task needs one, start with a single concise architecture page in the project's usual documentation location. Link its entry point from the project's existing README or AGENTS.md so future sessions can find it. Split into linked domain pages only when the overview becomes hard to navigate.
 
-## Establish scope and authority
+Capture only what helps future reasoning: component responsibilities and boundaries, important dependencies and data/control flows, external contracts, invariants, and consequential decisions with their rationale. Link to concrete repository paths, symbols, configuration, tests, or existing decision records. Use a diagram only when it clarifies relationships. Note coverage limits and unresolved discrepancies; do not imply a partial map covers the whole system.
 
-Before editing, inspect the relevant flow, repository instructions, architecture sources, and tests. Record the affected repositories, worktree paths, branches, HEADs, existing changes, and intended integration targets. Include untracked work that must be preserved. Identify the exact architecture revision and any relevant uncommitted architecture changes. Inspect dependency, remote, or runtime state only where it affects the operation.
+Avoid exhaustive file inventories, copied implementation details, session logs, mandatory HLD/LLD templates, and speculative target designs. Reuse existing decision records and runtime runbooks rather than duplicating them. Planning-only work may describe a proposed state, clearly separated from what is implemented.
 
-Keep the initial state and track intentional changes well enough to distinguish them from drift. Recheck affected state at handoff, before integration or cleanup, and before operations whose safety depends on it. A continuous local edit does not need a repeated global inventory. Pause affected work on unexplained drift or conflicting authority; never overwrite it to restore an expected baseline.
+## Keep the map aligned
 
-Resolve the outcome, important invariants, architecture impact, and acceptance checks before dependent implementation. Scale design detail to uncertainty and failure impact. Missing authority blocks dependent work; implementation evidence does not replace it.
+For implementation work, resolve architectural decisions before dependent edits and update affected documentation alongside the change. Scale detail to the uncertainty and impact. Keep one author per page at a time. A delegated task may update descriptive documentation within its assigned scope; root retains decisions and final acceptance.
 
-The root owns cross-cutting architecture decisions and documents. It may assign specific architecture pages and decisions to an architect. Keep one responsible author per page. Product workers do not edit architecture authority; they report gaps to their supervisor. The root or assigned architect resolves and records the decision before dependent work proceeds. Respect project rules for Current and Proposed states; working code does not automatically promote a proposal.
+Before completion, compare the affected map and decisions with the actual diff, relevant code, configuration, and checks. Verify source links, distinguish implemented behavior from unverified runtime claims, and remove stale statements in the touched scope. Do not rewrite unrelated maps or update documents merely because a task occurred. Report changed architecture sources and material gaps.
 
-## Implement and verify
-
-Make the smallest correct change. The responsible agent reviews the actual diff and relevant surrounding behavior, including contracts, validation, security, accessibility, data safety, and regressions where affected. Delegated work needs the supervisor's review; a worker summary or passing tests alone is not acceptance. Add independent review when risk or uncertainty warrants it, not as a ritual for every change.
-
-Run the required checks and focused behavioral verification. Use the project readiness runbook when runtime behavior, containers, migrations, or deployment configuration are affected. Verify configuration before creating resources; use the intended source revisions and isolated task identity where needed. Verify applicable builds, migrations, seed, health, endpoints, and changed live scenarios. Explain missing runtime evidence or why runtime checks are unnecessary. Do not rebuild unrelated stacks.
-
-For corrections, reuse the same worker while its context remains useful. After one substantive failed correction, reassess the brief, evidence, and model. Repeated conceptual failures call for a stronger agent or direct root implementation, not an unbounded retry loop. Transfer mutation ownership before taking over.
-
-## Isolation and integration
-
-Choose worktree isolation separately from delegation. Use the current worktree when safe and permitted; create isolated task worktrees when repository rules, parallel writes, or protection of existing work require them. The root manages task worktrees and their lifecycle.
-
-Keep one mutating actor per worktree. Independent writers may share a repository only through separate worktrees with clear boundaries. Serialize changes that share contracts, architecture pages, generated outputs, migrations, runtime resources, or data. Give dependent work an accepted exact prerequisite revision or immutable input.
-
-The root integrates accepted changes in dependency order and reviews the combined result. Incremental integration is allowed when prerequisites are accepted and intermediate states are safe. Incorporate the governing architecture before dependent product integration. Resolve semantic conflicts as design decisions and reverify affected behavior. Do not require a separate integration worker or a global wait for unrelated slices.
-
-Before integration across repositories, establish exact inputs, target states, order, and safe recovery points. If it fails, stop dependent actions and recover only task-owned changes when this can preserve user work. Never reset through drift or perform destructive rollback without authorization. Report partial state and retain recovery evidence when safe recovery is blocked. Completion requires verification of the actual combined targets, not just isolated slices.
-
-## Completion and cleanup
-
-The root accepts the result only after required checks pass and no blocker or major finding remains. Record the disposition of smaller findings and unavailable evidence. Report the outcome, relevant architecture changes, actual branches/worktrees and revisions, verification, and material remaining risks. Include integration or rollback details only when applicable.
-
-After acceptance, the root may remove task-created resources that are no longer needed for review or recovery. Recheck ownership and state first. Remove only clean, inactive, noncanonical task worktrees whose changes are integrated or preserved in accepted recovery evidence; remove worktrees before their task branches. Never force-remove dirty, drifted, unintegrated, current, canonical, or user-owned work. Remove only exact task containers and nonshared task networks whose use has ended. Preserve volumes and databases unless deletion is explicitly authorized. Report removed resources and retained exceptions.
-
-This skill grants no additional authorization for remote mutation, publication, deployment, destructive operations, or discarding user work. Honor authorization already given; request missing authorization only for the affected action.
-
-## Local browser delivery on the homeserver
-
-When delivering runnable browser work on Bence's homeserver, apply `/home/benceb/.codex/skills/tailscale-service-delivery/SKILL.md`. Use the project's existing native or Compose runtime and hand off a verified persistent HTTPS `.dev.benceb.hu` URL. Containers are optional. Respect the project's architecture and isolation rules; the local delivery convention does not grant permission for unrelated or public deployments.
+Repository verification, isolation, integration, runtime delivery, cleanup, and authorization rules still apply through project instructions and the relevant skills; this skill does not redefine them.
