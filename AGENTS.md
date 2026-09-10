@@ -14,16 +14,16 @@ In Code Mode, batch independent, functions.exec-available calls within each boun
 
 ## Delegation
 
-Root owns planning, implementation, verification, and integration. Work primarily in root; keep tightly coupled reasoning and changes together. Delegate bounded work when separate context or an independent check improves quality. Parallelizability alone is not a reason to delegate. These rules apply independently of skills.
+Root owns planning, implementation, verification, and integration. Work primarily in root; keep tightly coupled reasoning and changes together. Use the helpers below for routine support; otherwise delegate bounded work when separate context or an independent check improves quality. Parallelizability alone is not a reason to delegate. These rules apply independently of skills.
 
-Use Luna for substantial bounded source discovery and extraction, even when root needs the result before continuing. Do trivial lookups directly. Handle ambiguous causal analysis in root or with a stronger model.
+Use `explorer` for substantial source discovery and `executor` for routine shell batches. Keep trivial calls direct. Create helpers on demand and reuse one executor per workspace within the session for successive batches; do not close and respawn it after each result. Their operating rules live in their profiles.
 
-Choose the model for each delegated task by difficulty: Luna for well-defined mechanical work with decisive checks; Terra for ordinary implementation and analysis; Sol or Astra for difficult, ambiguous, or high-risk work. Choose supported reasoning effort to match, starting from the selected model's default. Reassess a poorly matched assignment rather than repeating failed attempts. An equally capable agent can provide a separate difficult investigation or targeted independent review, not a mandatory second pass.
+For other delegated work, use `default` or `read_only` and select a supported model and reasoning effort by difficulty: Terra for ordinary tasks; Sol or Astra for difficult, ambiguous, or high-risk work. Reassess poorly matched assignments. Do not impose planning, implementation, or review stages.
 
-Use `default` for general work and `read_only` for non-mutating work. Select model and reasoning effort at spawn time, not through task-specific roles. Briefly tell the user the model, effort, and assignment; combine announcements for a batch.
+Briefly announce the model, effort, and assignment; combine batch announcements. Spawn with `fork_turns: "none"` and a compact brief containing the outcome, relevant sources and expected workspace state, allowed changes, and acceptance criteria. For follow-ups, send only changed context and the next assignment. Subagents do not redelegate or broaden scope.
 
-Spawn with `fork_turns: "none"` and a compact brief containing the task, relevant sources and workspace state, allowed changes, boundaries, and acceptance criteria. Subagents do not redelegate or broaden scope. Keep one mutating actor per worktree; use separate worktrees for concurrent writers and transfer ownership before taking over. Root owns integration and worktree lifecycle; preserve unrelated work and stop on unexplained drift.
+Keep one mutating actor per worktree; use separate worktrees for concurrent writers and transfer ownership before taking over. Keep sources stable during verification and Git finalization. Root owns integration and worktree lifecycle; preserve unrelated work and stop on unexplained drift.
 
-Request concise evidence, source references, verification, and uncertainty. Root reads decisive sources, reviews delegated diffs, and verifies the combined result before acceptance. Reuse an agent for related follow-up while its context remains useful; use a fresh agent for independent work. Do not redo delegated work except where needed to verify it.
+Request concise evidence, source references, verification, and uncertainty. Root reads decisive sources, reviews delegated diffs, and verifies the combined result before acceptance. Do not redo delegated work except where needed to verify it. Reuse related context while useful; replace stale or overloaded helpers.
 
 While agents run, do useful independent work or use the available blocking wait within client responsiveness limits. Batch follow-ups; avoid repeated status checks, progress pings, and full-history reads for status. Keep bulky logs out of the root context.
