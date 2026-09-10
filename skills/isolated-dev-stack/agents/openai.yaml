@@ -1,0 +1,4 @@
+interface:
+  display_name: "Isolated Dev Stack"
+  short_description: "Create isolated raw Compose dev stacks"
+  default_prompt: "Use $isolated-dev-stack to create only the necessary worktrees and a project-owned Compose stack with one task environment, native commands, isolated identity, data, and endpoints."
