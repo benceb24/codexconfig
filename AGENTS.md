@@ -14,13 +14,19 @@ In Code Mode, batch independent, functions.exec-available calls within each boun
 
 ## Delegation
 
-Root owns planning, implementation, verification, and integration. Work primarily in root; keep tightly coupled reasoning and changes together. Use the helpers below for routine support; otherwise delegate bounded work when separate context or an independent check improves quality. Parallelizability alone is not a reason to delegate. These rules apply independently of skills.
+Root owns implementation, verification, integration, and routine planning. Work primarily in root; keep tightly coupled reasoning and changes together. Delegate bounded work when separate context or an independent check improves quality. Parallelizability alone is not a reason to delegate. These rules apply independently of skills.
 
-Use `explorer` for substantial source discovery and `executor` for routine shell batches. Keep trivial calls direct. Create helpers on demand and reuse one executor per workspace within the session for successive batches; do not close and respawn it after each result. Their operating rules live in their profiles.
+Root and delegated agents may use `explorer` for substantial source discovery, evidence extraction, and bounded read-only review, including comparing an implementation against an explicit plan or architecture. Keep trivial lookups and checks direct. Create helpers on demand and reuse related explorer context while useful. Its operating rules live in its profile.
 
-For other delegated work, use `default` or `read_only` and select a supported model and reasoning effort by difficulty: Terra for ordinary tasks; Sol or Astra for difficult, ambiguous, or high-risk work. Reassess poorly matched assignments. Do not impose planning, implementation, or review stages.
+Do not delegate routine planning to `planner`. If root can reasonably determine the design itself, root also owns any resulting architecture decisions and architecture documentation changes.
 
-Briefly announce the model, effort, and assignment; combine batch announcements. Spawn with `fork_turns: "none"` and a compact brief containing the outcome, relevant sources and expected workspace state, allowed changes, and acceptance criteria. For follow-ups, send only changed context and the next assignment. Subagents may delegate bounded support work to the specified Luna `explorer` and `executor` roles, following the same helper selection, announcement, briefing, and reuse rules. They must keep delegation within their assigned scope and must not delegate to other roles or broaden scope. Luna helpers do not redelegate.
+Use `planner` only when planning itself requires high judgment: meaningful competing approaches with non-obvious tradeoffs, important contract/schema/security changes, high-blast-radius or difficult-to-reverse choices, or a discovered need to fundamentally rethink the current approach.
+
+When used, `planner` owns its assigned architecture/design work, may create or update architecture documentation, and produces an implementation plan for root. Root retains implementation, integration, and final acceptance authority.
+
+For other delegated work, use `default` or `read_only`: Terra for ordinary tasks and Sol for difficult analysis or implementation. Reassess poorly matched assignments. Do not impose planning, implementation, or review stages.
+
+Briefly announce the profile/model, effort, and assignment; combine batch announcements. Spawn with `fork_turns: "none"` and a compact brief containing the outcome, relevant sources and expected workspace state, allowed changes, and acceptance criteria. For follow-ups, send only changed context and the next assignment. Subagents may delegate bounded support work to the specified Luna `explorer` role, following the same helper selection, announcement, briefing, and reuse rules. They must keep delegation within their assigned scope and must not delegate to other roles or broaden scope. Luna helpers do not redelegate.
 
 Keep one mutating actor per worktree; use separate worktrees for concurrent writers and transfer ownership before taking over. Keep sources stable during verification and Git finalization. Root owns integration and worktree lifecycle; preserve unrelated work and stop on unexplained drift.
 
